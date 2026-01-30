@@ -1,0 +1,125 @@
+<style>
+  .search-btn {
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+  }
+
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+
+  .search-btn i {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+
+  /* Keep your existing input styles */
+  .search-inp {
+      border-radius: 25px;
+      padding: 0.5rem 3rem;
+      font-size: 1rem;
+  }
+
+  /* Shift the search form slightly right */
+  #searchForm {
+      display: flex;
+      justify-content: flex-start; /* start from left within container */
+  }
+
+
+  .user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+   background: linear-gradient(45deg, #FF5A5F, #FF8E53);  /* dark gray */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+  
+</style>
+
+
+
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+
+    <!-- LEFT CORNER BRAND (ONLY ONE ICON + TEXT) -->
+    <a class="navbar-brand d-flex align-items-center" href="/listings">
+      <i class="fa-regular fa-compass me-1 brand-icon"></i>
+      <span class="brand-text">wanderlust</span>
+    </a>
+
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+      <!-- SEARCH (UNCHANGED POSITION) -->
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" id="searchForm">
+        <input
+          class="form-control me-2 search-inp"
+          type="search"
+          placeholder="Search destinations"
+          id="searchInput"
+          autocomplete="off"
+          />
+          <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+        </form>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+       
+        
+      <!-- RIGHT SIDE LINKS -->
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Home</a>
+        <a class="nav-link" href="/listings/new"><b>Become a host</b></a>
+
+        <% if (currUser) { %>
+          <div class="user-avatar">
+            <%= currUser.username.slice(0,1).toUpperCase() %>
+          </div>
+        <% } %>
+
+
+       <!-- HAMBURGER USER MENU (always rendered) -->
+        <!-- HAMBURGER USER MENU -->
+        <!-- HAMBURGER USER MENU -->
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i> <!-- Hamburger icon only -->
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <% if (!currUser) { %>
+              <!-- Guest User -->
+              <li><a class="dropdown-item" href="/signup">&nbsp;&nbsp;Sign Up</a></li>
+              <li><a class="dropdown-item" href="/login">&nbsp;&nbsp;Log In</a></li>
+            <% } else { %>
+              <!-- Logged-in User -->
+              <li><a class="dropdown-item" href="/wishlist"><i class="fa-solid fa-heart me-2"></i>Wishlists</a></li>
+              <li><a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/account"><i class="fa-solid fa-gear me-2"></i>Account Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">&nbsp;&nbsp;Log Out</a></li>
+            <% } %>
+          </ul>
+        </li>         
+            
+      </div>
+    </div>
+  </div>
+</nav>

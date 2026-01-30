@@ -1,0 +1,218 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- Hero Section (Full Width) -->
+<div class="hero-section">
+  <img 
+    src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
+    alt="Beautiful Home"
+    class="hero-image"
+  />
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">Find your perfect getaway</h1>
+    <p class="hero-subtitle">Discover amazing places to stay around the world</p>
+    <div class="hero-actions">
+      <a href="#listings" class="hero-btn hero-btn-primary">
+        <i class="fas fa-search"></i> Explore Listings
+      </a>
+      <a href="/host" class="hero-btn hero-btn-secondary">
+        <i class="fas fa-home"></i> Become a Host
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content Container - BROADER -->
+<div class="container" id="listings">
+  <!-- Listings Section -->
+  <div class="listings-header">
+    <h2 class="listings-title">Explore amazing stays</h2>
+    <p class="listings-subtitle">
+      <%= allListings && allListings.length ? allListings.length : 0 %>+ places to stay · 
+      <span id="current-location">All Locations</span>
+    </p>
+  </div>
+
+  <!-- Filters -->
+  <div id="filters">
+    <div class="filter active" data-filter="all"> 
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </div>
+    <div class="filter" data-filter="rooms"> 
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </div>
+    <div class="filter" data-filter="cities"> 
+      <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Cities</p>
+    </div>
+    <div class="filter" data-filter="mountains"> 
+      <div><i class="fa-solid fa-mountain"></i></div>
+      <p>Mountains</p>
+    </div>
+    <div class="filter" data-filter="castles"> 
+      <div><i class="fa-solid fa-fort-awesome"></i></div>
+      <p>Castles</p>
+    </div>
+    <div class="filter" data-filter="pools"> 
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Pools</p>
+    </div>
+    <div class="filter" data-filter="camping"> 
+      <div><i class="fa-solid fa-campground"></i></div>
+      <p>Camping</p>
+    </div>
+    <div class="filter" data-filter="farms"> 
+      <div><i class="fa-solid fa-cow"></i></div>
+      <p>Farms</p>
+    </div>
+    <div class="filter" data-filter="arctic"> 
+      <div><i class="fa-regular fa-snowflake"></i></div>
+      <p>Arctic</p>
+    </div>
+    <div class="filter" data-filter="domes"> 
+      <div><i class="fa-solid fa-igloo"></i></div>
+      <p>Domes</p>
+    </div>
+    <div class="filter" data-filter="boats"> 
+      <div><i class="fa-solid fa-ship"></i></div>
+      <p>Boats</p>
+    </div>
+
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+        <label class="form-check-label" for="switchCheckDefault">Show taxes</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listings Grid - BROADER cards, 3 per row -->
+  <% if (allListings && allListings.length > 0) { %>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4" id="listings-grid">
+      <% for (let listing of allListings) { %>
+        <div class="col" data-category="<%= listing.category || 'all' %>">
+          <div class="card listing-card h-100">
+            <!-- Wishlist button -->
+            <button
+              class="wishlist-btn <%= wishlist && wishlist.includes(listing._id.toString()) ? 'active' : '' %>"
+              data-id="<%= listing._id %>">
+              <i class="fa-solid fa-heart"></i>
+            </button>
+
+            <!-- Listing Image - ONLY THIS HAS ZOOM EFFECT -->
+            <a href="/listings/<%= listing._id %>" class="listing-link">
+              <img
+                src="<%= listing.image.url || 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80' %>"
+                class="card-img-top listing-image"
+                alt="<%= listing.title %>"
+                loading="lazy"
+              />
+            </a>
+
+            <!-- Listing Info -->
+            <div class="card-body d-flex flex-column">
+              <a href="/listings/<%= listing._id %>" class="listing-link flex-grow-1">
+                <!-- Title with line clamp -->
+                <h5 class="listing-title" title="<%= listing.title %>" data-text="<%= listing.title %>">
+                  <%= listing.title || "No Title" %>
+                </h5>
+                
+                <!-- Rating Section - CORRECTED -->
+                <div class="listing-rating">
+                  <% 
+                    // Calculate review count and rating
+                    const reviewCount = listing.reviewCount || 0;
+                    const rating = listing.rating || 0;
+                    const hasReviews = reviewCount > 0;
+                  %>
+                  
+                  <% if (hasReviews) { %>
+                    <!-- Show stars with rating -->
+                    <% for (let i = 1; i <= 5; i++) { %>
+                      <% if (i <= Math.floor(rating)) { %>
+                        <i class="fas fa-star"></i>
+                      <% } else if (i === Math.ceil(rating) && rating % 1 >= 0.5) { %>
+                        <i class="fas fa-star-half-alt"></i>
+                      <% } else { %>
+                        <i class="far fa-star"></i>
+                      <% } %>
+                    <% } %>
+                    <!-- Show rating and review count -->
+                    <span class="rating-text">
+                      <%= rating.toFixed(1) %> (<%= reviewCount %> <%= reviewCount === 1 ? 'review' : 'reviews' %>)
+                    </span>
+                  <% } else { %>
+                    <!-- Show empty stars with "No reviews yet" -->
+                    <% for (let i = 1; i <= 5; i++) { %>
+                      <i class="far fa-star"></i>
+                    <% } %>
+                    <span class="no-reviews">No reviews yet</span>
+                  <% } %>
+                </div>
+                
+                <!-- Location with Map Icon -->
+                <div class="listing-location" title="<%= listing.location || 'Location not specified' %>">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span><%= listing.location || "Location not specified" %></span>
+                </div>
+                
+                <!-- Price -->
+                <div class="listing-price mt-auto">
+                  &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %> 
+                  <span class="text-muted" style="font-weight: 400;">/ night</span>
+                  <span class="tax-info">&nbsp;+18% GST</span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Book Now Button -->
+            <div class="mt-auto">
+              <a href="/listings/<%= listing._id %>/book" class="book-now-btn">
+                <i class="fas fa-calendar-alt"></i> Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } else { %>
+    <!-- No Listings Message -->
+    <div class="text-center py-5">
+      <i class="fas fa-home fa-4x text-muted mb-3"></i>
+      <h3>No listings available</h3>
+      <p class="text-muted">Check back later for new properties.</p>
+    </div>
+  <% } %>
+
+  <!-- No Results Message -->
+  <div id="no-results" style="display: none; text-align: center; padding: 4rem;">
+    <i class="fas fa-search" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
+    <h3>No listings found</h3>
+    <p>Try adjusting your filters or search criteria</p>
+  </div>
+</div>
+
+<!-- CTA Section (Full Width) - Attached to footer -->
+<div class="cta-section">
+  <div class="cta-pattern"></div>
+  <div class="cta-container">
+    <div class="cta-content">
+      <h2 class="cta-title">Ready to host your property?</h2>
+      <p class="cta-subtitle">Join thousands of hosts who are earning extra income by sharing their space with travelers from around the world. It's free to list and you're in full control.</p>
+      <div class="cta-buttons">
+        <a href="/host" class="cta-btn cta-btn-primary">
+          <i class="fas fa-home"></i> Start Hosting
+        </a>
+        <a href="/listings/new" class="cta-btn cta-btn-secondary">
+          <i class="fas fa-plus-circle"></i> Post your Journey
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

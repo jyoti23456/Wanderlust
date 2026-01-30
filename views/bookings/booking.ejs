@@ -1,0 +1,555 @@
+<% layout('/layouts/boilerplate') %>
+
+<!-- Main Booking Container -->
+<div class="booking-container container-fluid px-0">
+  
+  <!-- Hero Booking Header -->
+  <div class="booking-hero-section position-relative">
+    <div class="booking-hero-overlay"></div>
+    <div class="container position-relative z-3">
+      <nav aria-label="breadcrumb" class="booking-breadcrumb pt-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/listings" class="text-white-50">Listings</a></li>
+          <li class="breadcrumb-item"><a href="/listings/<%= listing._id %>" class="text-white-50"><%= listing.title %></a></li>
+          <li class="breadcrumb-item active text-white" aria-current="page">Booking</li>
+        </ol>
+      </nav>
+      <div class="booking-hero-content py-5">
+        <h1 class="display-4 fw-bold text-white mb-3">Reserve Your Stay</h1>
+        <p class="lead text-white mb-4">Complete your booking in just a few steps</p>
+        <div class="booking-progress">
+          <div class="progress-step active">
+            <div class="step-circle">1</div>
+            <span class="step-label">Select Dates</span>
+          </div>
+          <div class="progress-step">
+            <div class="step-circle">2</div>
+            <span class="step-label">Guests & Details</span>
+          </div>
+          <div class="progress-step">
+            <div class="step-circle">3</div>
+            <span class="step-label">Review & Pay</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Main Content -->
+  <div class="container py-5">
+    <div class="row g-5">
+      
+      <!-- Left Column: Booking Form -->
+      <div class="col-lg-8">
+        <div class="booking-card card border-0 shadow-lg mb-4">
+          <div class="card-body p-4 p-md-5">
+            <h2 class="h3 fw-bold mb-4">Select Dates & Guests</h2>
+            
+            <!-- Date Selection -->
+            <div class="mb-5">
+              <h3 class="h5 mb-3"><i class="fas fa-calendar-alt me-2"></i>Select Dates</h3>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="checkin" class="form-label fw-medium">Check-in</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="fas fa-sign-in-alt"></i></span>
+                    <input type="date" class="form-control py-3" id="checkin" name="checkin" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="checkout" class="form-label fw-medium">Check-out</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="fas fa-sign-out-alt"></i></span>
+                    <input type="date" class="form-control py-3" id="checkout" name="checkout" required>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3">
+                <div class="form-text"><i class="fas fa-info-circle me-1"></i>Minimum stay: 2 nights</div>
+              </div>
+            </div>
+
+            <!-- Guest Selection -->
+            <div class="mb-5">
+              <h3 class="h5 mb-3"><i class="fas fa-users me-2"></i>Guests</h3>
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="form-label fw-medium">Adults</label>
+                  <div class="guest-counter input-group">
+                    <button type="button" class="btn btn-outline-secondary decrement">−</button>
+                    <input type="text" class="form-control text-center" value="2" readonly>
+                    <button type="button" class="btn btn-outline-secondary increment">+</button>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-medium">Children</label>
+                  <div class="guest-counter input-group">
+                    <button type="button" class="btn btn-outline-secondary decrement">−</button>
+                    <input type="text" class="form-control text-center" value="0" readonly>
+                    <button type="button" class="btn btn-outline-secondary increment">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Special Requests -->
+            <div class="mb-5">
+              <h3 class="h5 mb-3"><i class="fas fa-concierge-bell me-2"></i>Special Requests</h3>
+              <textarea class="form-control" rows="4" placeholder="Tell your host about any special requirements or questions..."></textarea>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-4">
+              <h3 class="h5 mb-3"><i class="fas fa-credit-card me-2"></i>Payment Method</h3>
+              <div class="payment-methods">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="payment" id="creditCard" checked>
+                  <label class="form-check-label d-flex align-items-center" for="creditCard">
+                    <i class="fab fa-cc-visa fs-4 me-3 text-primary"></i>
+                    <div>
+                      <div class="fw-medium">Credit/Debit Card</div>
+                      <small class="text-muted">Pay securely with your card</small>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="payment" id="paypal">
+                  <label class="form-check-label d-flex align-items-center" for="paypal">
+                    <i class="fab fa-paypal fs-4 me-3 text-primary"></i>
+                    <div>
+                      <div class="fw-medium">PayPal</div>
+                      <small class="text-muted">Fast and secure online payments</small>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="payment" id="wallet">
+                  <label class="form-check-label d-flex align-items-center" for="wallet">
+                    <i class="fas fa-wallet fs-4 me-3 text-primary"></i>
+                    <div>
+                      <div class="fw-medium">Wallet</div>
+                      <small class="text-muted">Use your Wanderlust wallet balance</small>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" id="terms" required>
+              <label class="form-check-label" for="terms">
+                I agree to the <a href="/terms" class="text-decoration-none">Terms & Conditions</a> and 
+                <a href="/cancellation" class="text-decoration-none">Cancellation Policy</a>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+              <i class="fas fa-lock me-2"></i>Complete Secure Booking
+            </button>
+          </div>
+        </div>
+
+        <!-- Safety Features -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <h3 class="h5 mb-3"><i class="fas fa-shield-alt me-2"></i>Safe & Secure Booking</h3>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-check-circle text-success me-2"></i>
+                  <span>Secure Payment</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-check-circle text-success me-2"></i>
+                  <span>Free Cancellation</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-check-circle text-success me-2"></i>
+                  <span>24/7 Support</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Booking Summary -->
+      <div class="col-lg-4">
+        <!-- Property Summary Card -->
+        <div class="card border-0 shadow-lg sticky-top" style="top: 20px;">
+          <div class="card-body p-4">
+            <h3 class="h5 fw-bold mb-4">Booking Summary</h3>
+            
+            <!-- Property Image & Title -->
+            <div class="d-flex mb-4">
+              <img src="<%= listing.image.url || 'https://images.unsplash.com/photo-1518780664697-55e3ad937233' %>" 
+                   class="rounded-3 me-3" 
+                   alt="<%= listing.title %>" 
+                   style="width: 80px; height: 80px; object-fit: cover;">
+              <div>
+                <h4 class="h6 fw-bold mb-1"><%= listing.title %></h4>
+                <div class="text-muted small">
+                  <i class="fas fa-map-marker-alt me-1"></i>
+                  <%= listing.location %>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="price-breakdown mb-4">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">₹<%= listing.price %> × 3 nights</span>
+                <span class="fw-medium">₹<%= listing.price * 3 %></span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Cleaning fee</span>
+                <span class="fw-medium">₹500</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Service fee</span>
+                <span class="fw-medium">₹300</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Taxes (18% GST)</span>
+                <span class="fw-medium">₹<%= Math.round(listing.price * 3 * 0.18) %></span>
+              </div>
+              <hr class="my-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="h5 fw-bold mb-0">Total</span>
+                <span class="h4 fw-bold text-primary">₹<%= listing.price * 3 + 500 + 300 + Math.round(listing.price * 3 * 0.18) %></span>
+              </div>
+              <div class="text-muted small mt-1">Including all fees and taxes</div>
+            </div>
+
+            <!-- Host Info -->
+            <div class="host-info border-top pt-4 mt-4">
+              <h5 class="h6 fw-bold mb-3">Your Host</h5>
+              <div class="d-flex align-items-center">
+                <div class="avatar-circle me-3">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <div class="fw-medium">Host Name</div>
+                  <div class="text-muted small">Superhost • 4.8 rating</div>
+                </div>
+              </div>
+              <button class="btn btn-outline-primary btn-sm w-100 mt-3">
+                <i class="fas fa-comment me-1"></i>Message Host
+              </button>
+            </div>
+
+            <!-- Cancellation Policy -->
+            <div class="cancellation-policy border-top pt-4 mt-4">
+              <h5 class="h6 fw-bold mb-2">Cancellation Policy</h5>
+              <div class="text-muted small">
+                <p class="mb-2">Free cancellation for 48 hours after booking</p>
+                <p class="mb-0">Full refund if cancelled at least 7 days before check-in</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Need Help Card -->
+        <div class="card border-0 shadow-sm mt-4">
+          <div class="card-body p-4 text-center">
+            <i class="fas fa-headset fs-1 text-primary mb-3"></i>
+            <h5 class="h6 fw-bold mb-2">Need Help?</h5>
+            <p class="text-muted small mb-3">Our support team is here for you 24/7</p>
+            <button class="btn btn-outline-primary btn-sm w-100">
+              <i class="fas fa-phone-alt me-1"></i>Contact Support
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Booking Assistant -->
+<div class="booking-assistant">
+  <div class="assistant-toggle" id="assistantToggle">
+    <i class="fas fa-question-circle"></i>
+  </div>
+  <div class="assistant-content" id="assistantContent">
+    <div class="assistant-header">
+      <h6>Booking Assistant</h6>
+      <button class="btn-close" id="closeAssistant"></button>
+    </div>
+    <div class="assistant-body">
+      <p class="small mb-3">Need help with your booking? I'm here to assist!</p>
+      <div class="assistant-option mb-2">
+        <i class="fas fa-calendar-check me-2"></i>
+        <span>How to change dates?</span>
+      </div>
+      <div class="assistant-option mb-2">
+        <i class="fas fa-money-bill-wave me-2"></i>
+        <span>Payment options explained</span>
+      </div>
+      <div class="assistant-option">
+        <i class="fas fa-user-shield me-2"></i>
+        <span>Safety measures</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+  .booking-hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+  }
+  
+  .booking-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(113, 76, 255, 0.9) 0%, rgba(255, 76, 162, 0.9) 100%);
+    opacity: 0.8;
+  }
+  
+  .booking-progress {
+    display: flex;
+    justify-content: space-between;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .progress-step.active .step-circle {
+    background: white;
+    color: #714cff;
+  }
+  
+  .step-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+  }
+  
+  .progress-step.active .step-label {
+    color: white;
+    font-weight: 500;
+  }
+  
+  .guest-counter .btn {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  
+  .guest-counter input {
+    height: 45px;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .payment-methods {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .avatar-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #714cff, #ff4ca2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  
+  .price-breakdown hr {
+    border-top: 2px dashed #dee2e6;
+  }
+  
+  .booking-assistant {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+  }
+  
+  .assistant-toggle {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #714cff, #ff4ca2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(113, 76, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .assistant-toggle:hover {
+    transform: scale(1.1);
+  }
+  
+  .assistant-content {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 280px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: none;
+    overflow: hidden;
+  }
+  
+  .assistant-header {
+    background: linear-gradient(135deg, #714cff, #ff4ca2);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .assistant-body {
+    padding: 15px;
+  }
+  
+  .assistant-option {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .assistant-option:hover {
+    background: #f8f9fa;
+    border-color: #714cff;
+  }
+  
+  .sticky-top {
+    position: sticky;
+    z-index: 1020;
+  }
+</style>
+
+<!-- JavaScript for Interactive Elements -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Guest Counter
+    document.querySelectorAll('.guest-counter').forEach(counter => {
+      const decrement = counter.querySelector('.decrement');
+      const increment = counter.querySelector('.increment');
+      const input = counter.querySelector('input');
+      
+      decrement.addEventListener('click', () => {
+        let value = parseInt(input.value);
+        if (value > (input.name === 'adults' ? 1 : 0)) {
+          input.value = value - 1;
+        }
+      });
+      
+      increment.addEventListener('click', () => {
+        let value = parseInt(input.value);
+        input.value = value + 1;
+      });
+    });
+    
+    // Date Validation
+    const checkinInput = document.getElementById('checkin');
+    const checkoutInput = document.getElementById('checkout');
+    
+    // Set minimum dates
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    
+    checkinInput.min = today;
+    checkoutInput.min = tomorrow;
+    
+    checkinInput.addEventListener('change', () => {
+      if (checkinInput.value) {
+        const nextDay = new Date(checkinInput.value);
+        nextDay.setDate(nextDay.getDate() + 1);
+        checkoutInput.min = nextDay.toISOString().split('T')[0];
+        
+        if (checkoutInput.value && checkoutInput.value < checkoutInput.min) {
+          checkoutInput.value = '';
+        }
+      }
+    });
+    
+    // Booking Assistant
+    const assistantToggle = document.getElementById('assistantToggle');
+    const assistantContent = document.getElementById('assistantContent');
+    const closeAssistant = document.getElementById('closeAssistant');
+    
+    assistantToggle.addEventListener('click', () => {
+      assistantContent.style.display = 
+        assistantContent.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    closeAssistant.addEventListener('click', () => {
+      assistantContent.style.display = 'none';
+    });
+    
+    // Assistant Options
+    document.querySelectorAll('.assistant-option').forEach(option => {
+      option.addEventListener('click', () => {
+        alert('This feature would connect you with our support chatbot or FAQ system.');
+      });
+    });
+    
+    // Form Submission
+    document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
+      if (!document.getElementById('terms').checked) {
+        e.preventDefault();
+        alert('Please agree to the Terms & Conditions before proceeding.');
+      }
+    });
+    
+    // Animate price on hover
+    document.querySelector('.price-breakdown').addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-5px)';
+      this.style.transition = 'transform 0.3s ease';
+    });
+    
+    document.querySelector('.price-breakdown').addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
+    });
+  });
+</script>

@@ -1,0 +1,49 @@
+<% layout("layouts/boilerplate") %>
+
+<style>
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh; background-color: #f8f8f8;">
+  <div class="row w-100">
+    <div class="col-md-8 col-lg-5 mx-auto">
+      <div class="card shadow-lg p-4 rounded-3" style="min-height: 550px; background-color: #ffffff;">
+        <h2 class="text-center mb-4 fw-bold" style="color: #343a40;">Sign Up</h2>
+          <p class="text-center text-muted mb-4 ">
+            <i class="fa-solid fa-map-location-dot" style="color:#fe424d; animation: bounce 1.5s infinite;"></i>
+            Create your travel story.</p>  
+        <form action="/signup" method="POST" class="needs-validation" novalidate>
+          
+          <div class="mb-3 position-relative">
+            <label for="username" class="form-label">Username</label>
+            <input name="username" id="username" type="text" class="form-control ps-5" placeholder="Choose a username" required/>
+            <i class="fa-solid fa-user position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+            <div class="valid-feedback">Looks perfect!</div>
+          </div>
+
+          <div class="mb-3 position-relative">
+            <label for="email" class="form-label">Email</label>
+            <input name="email" id="email" type="email" class="form-control ps-5" placeholder="Enter your email" required/>
+            <i class="fa-solid fa-envelope position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+          </div>
+
+          <div class="mb-3 position-relative">
+            <label for="password" class="form-label">Password</label>
+            <input name="password" id="password" type="password" class="form-control ps-5" placeholder="Create a password" required/>
+            <i class="fa-solid fa-lock position-absolute" style="top: 38px; left: 15px; color: #6c757d;"></i>
+          </div>
+
+          <button class="btn btn-success w-100 py-2 fw-bold">Sign Up</button>
+        </form>
+        <p class="text-center mt-3 text-muted">Already have an account? <a href="/login" class="text-success fw-bold">Login</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
