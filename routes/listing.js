@@ -10,7 +10,6 @@ const Listing = require("../models/listing");
 const upload = multer({ storage });
 
 
-
 // FIX: convert listing.image to object BEFORE JOI validation
 const formatImage = (req, res, next) => {
   if (req.body.listing) {
@@ -27,50 +26,74 @@ const formatImage = (req, res, next) => {
 };
 
 
-// search route
-  router.get("/search", async (req, res) => {
-    const { q } = req.query;
 
-    if (!q) return res.json([]);
+// ✅ 1. SEARCH (TOP)
+router.get("/search", async (req, res) => {
+  const { q } = req.query;
 
-    const listings = await Listing.find({
-      $or: [
-        { title: { $regex: q, $options: "i" } },
-        { location: { $regex: q, $options: "i" } },
-        { country: { $regex: q, $options: "i" } },
-        { category: { $regex: q, $options: "i" } },
-      ],
-    }).limit(6);
+  if (!q) return res.json([]);
 
-    res.json(listings);
-  });
+  const listings = await Listing.find({
+    $or: [
+      { title: { $regex: q, $options: "i" } },
+      { location: { $regex: q, $options: "i" } },
+      { country: { $regex: q, $options: "i" } },
+      { category: { $regex: q, $options: "i" } },
+    ],
+  }).limit(6);
 
-
-
-// INDEX + CREATE
-router
-  .route("/")
-  .get(wrapAsync(listingController.index))
-  .post(
-  isLoggedIn,
-  upload.single("image"),
-  formatImage,
-  validateListing,
-  wrapAsync(listingController.createListing)
-);
+  res.json(listings);
+});
 
 
-// NEW LISTING FORM
+
+// ✅ 2. NEW (IMPORTANT — ABOVE :id)
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
-// category
+
+
+// ✅ 3. CATEGORY
 router.get(
   "/category/:categoryName",
   wrapAsync(listingController.categoryListings)
 );
 
 
-// SHOW / UPDATE / DELETE
+
+// ✅ 4. INDEX + CREATE
+router
+  .route("/")
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
+    upload.single("image"),
+    formatImage,
+    validateListing,
+    wrapAsync(listingController.createListing)
+  );
+
+
+
+// ✅ 5. EDIT (ABOVE :id)
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  isOwner,
+  wrapAsync(listingController.renderEditForm)
+);
+
+
+
+// ✅ 6. BOOK (ABOVE :id)
+router.get("/:id/book", async (req, res) => {
+  const listing = await Listing.findById(req.params.id);
+  if (!listing) return res.redirect("/listings");
+  res.render("bookings/booking", { listing });
+});
+
+
+
+// ✅ 7. SHOW / UPDATE / DELETE (LAST)
 router
   .route("/:id")
   .get(wrapAsync(listingController.showListing))
@@ -88,23 +111,5 @@ router
   );
 
 
-// EDIT FORM
-router.get(
-  "/:id/edit",
-  isLoggedIn,
-  isOwner,
-  wrapAsync(listingController.renderEditForm)
-);
-
-// Show booking page
-// Show booking page
-router.get("/:id/book", async (req, res) => {
-    const listing = await Listing.findById(req.params.id);
-    if (!listing) return res.redirect("/listings"); // fallback
-    res.render("bookings/booking", { listing });
-});
-
 
 module.exports = router;
-
-
